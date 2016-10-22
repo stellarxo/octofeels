@@ -1,12 +1,13 @@
 app.controller('feelCtrl', function($scope, $http) {
-	$scope.derp = "Octofeeeeeeeels";
+    $scope.derp = "Octofeeeeeeeels";
     redditUrl = "https://www.reddit.com/r/"
 
-	// attachs the webcam to the camera
-	Webcam.attach('#camera');
+    // attachs the webcam to the camera
+    Webcam.attach('#camera');
 
     // emtions dictionary
-    $scope.emotions = {
+
+    subreddits = {
         "anger": "aww+cute",
         "contempt": "aww+cute",
         "disgust": "aww+cute",
@@ -17,10 +18,19 @@ app.controller('feelCtrl', function($scope, $http) {
         "surprise": "aww+cute"
     }
 
+    $scope.phrase = "Welcome!";
+    $scope.currentImage = "hi.png";
+    $scope.feels = ['Happiness', 'Surprise', 'Sadness', 'Neutral', 'Anger', 'Contempt', 'Disgust', 'Fear'];
+    $scope.selectedFeel;
+
+
+    // attaches the webcam to the camera
+    Webcam.attach('#camera');
+
     function getRedditPhoto(e){
         var req = {
             method: 'GET',
-            url: redditUrl + $scope.emotions[e] + '/top/.json?sort=top&t=all'
+            url: redditUrl + $scope.subreddits[e] + '/top/.json?sort=top&t=all'
         }
         $http(req).then(function successCallback(result){
             var photoList = result.data.data.children;
@@ -35,6 +45,7 @@ app.controller('feelCtrl', function($scope, $http) {
         console.log(rObject);
         console.log(rObject.data.url);
         console.log(rObject.data.score);
+        return data.url;
     }
 
     function processResult(response)
@@ -43,13 +54,21 @@ app.controller('feelCtrl', function($scope, $http) {
         if(data.length > 0){
             $scope.emotion = getMax(data[0].scores)
             console.log($scope.emotion);
+
             getRedditPhoto($scope.emotion);
+            
+            $scope.phrase = "You are feeling " + $scope.emotion;
+            $scope.currentImage = $scope.emotion + ".png";
+            // console.log($scope.emotion);
         }
         else{
-            console.log("Didn't find faces");
+            // console.log("Didn't find faces");
+            $scope.phrase = "I don't know what you're feeling, weirdo";
+            $scope.currentImage = "404.gif";
         }
     }
 
+    // returns the max element of an array
     function getMax(arr) {
         var max;
         for (var key in arr) {
@@ -58,6 +77,7 @@ app.controller('feelCtrl', function($scope, $http) {
         return max;
     }
 
+    // turns a data URI into a binary blob
     function dataURItoBlob(dataURI) {
 
         // convert base64/URLEncoded data component to raw binary data held in a string
@@ -79,9 +99,9 @@ app.controller('feelCtrl', function($scope, $http) {
         return new Blob([ia], {type:mimeString});
     }
 
-    $scope.takeSnapshot = function() {    	
+    // takes a screenshot of the image currently being viewed from the webcam and gets the emotion
+    $scope.takeSnapshot = function() {      
         Webcam.snap( function(data_uri) {
-        	// TODO send to API
             var file = new File([dataURItoBlob(data_uri)], 'fileName.jpeg', {type: "'image/jpeg"});
             var req = {
                 method: 'POST',
@@ -95,10 +115,32 @@ app.controller('feelCtrl', function($scope, $http) {
 
             $http(req).then(function successCallback(result){
                 processResult(result);
+
             }, function errorCallback(result){
-                console.log("you fucked up")
+                console.log("you fucked up");
             });
+
+            // shows image that was taken on the page
+            // document.getElementById('result').innerHTML = '<img src="'+ data_uri+'"/>';
         } );
+    }
+
+    // Change feels
+    
+
+    $scope.changeFeel = function(item) {
+        console.log(item);
+        if (item == 'surprise_me') {
+            $scope.selectedFeel = $scope.feels[Math.floor(Math.random() * 8)].toLowerCase();
+        }
+        else {
+            $scope.selectedFeel = item.toLowerCase();
+        }
+        // console.log("Selected " + $scope.selectedFeel);
+        var random = Math.floor(Math.random() * 1) + 1;
+        $scope.currentImage = "makeFeels/" + $scope.selectedFeel + random + ".gif";
+        // console.log($scope.currentImage);
+        $scope.phrase = "Do you feel " + $scope.selectedFeel + " yet???"
     }
 
 });
