@@ -1,5 +1,7 @@
 app.controller('feelCtrl', function($scope, $http) {
 	$scope.derp = "Octofeeeeeeeels";
+    $scope.phrase = "Welcome!";
+    $scope.currentImage = "hi.png";
 
 	// attachs the webcam to the camera
 	Webcam.attach('#camera');
@@ -11,12 +13,15 @@ app.controller('feelCtrl', function($scope, $http) {
         console.log(response);
         var data = response.data;
         if(data.length > 0){
-            $scope.emotion = getMax(data[0].scores)
-            $scope.currentImage = $scope.emotion + ".png"
+            $scope.emotion = getMax(data[0].scores);
+            $scope.phrase = "You are feeling " + $scope.emotion;
+            $scope.currentImage = $scope.emotion + ".png";
             console.log($scope.emotion);
         }
         else{
             console.log("Didn't find faces");
+            $scope.emotion = "something weird";
+            $scope.currentImage = "404.gif";
         }
     }
 
@@ -69,7 +74,7 @@ app.controller('feelCtrl', function($scope, $http) {
                 processResult(result);
                 console.log(result);
             }, function errorCallback(result){
-                console.log("you fucked up")
+                console.log("you fucked up");
             });
 
         	// shows image that was taken on the page

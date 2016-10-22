@@ -2,14 +2,14 @@
 
 	<h1> Feel all the {{derp}}!</h1>
 
-		<button ng-click="takeSnapshot()" class="btn">Take Snapshot</button>
+		<button ng-click="takeSnapshot()" class="btn">How do I octofeel?</button>
 
 	<div id="camera" ng-show='false'></div>
 
 	<!-- shows a gif of the resulting emotion if there is one -->
-	<div ng-show="emotion">
-		<h2> You are feeling {{emotion}}</h2>
-		<img src="img/{{currentImage}}">
+	<div>
+		<h3>{{phrase}}</h3>
+		<img class="emotion-img" src="img/{{currentImage}}">
 	</div>
 
 </div>

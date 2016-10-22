@@ -4,5 +4,10 @@
 }
 
 .btn {
-	margin-bottom:20px;
+	margin-top: 10px;
+}
+
+.emotion-img {
+	width: 300px;
+	padding-top: 20px;
 }
