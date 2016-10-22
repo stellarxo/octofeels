@@ -91,8 +91,9 @@ app.controller('feelCtrl', function($scope, $http) {
         $scope.selectedFeel = item;
         console.log("Selected " + $scope.selectedFeel);
         var random = "1";
-        $scope.currentImage = "makeFeels/" + $scope.selectedFeel + random + ".png";
+        $scope.currentImage = "makeFeels/" + $scope.selectedFeel + random + ".gif";
         console.log($scope.currentImage);
+        $scope.phrase = "Do you feel " + $scope.selectedFeel.toLowerCase() + " yet???"
     }
 
 });
