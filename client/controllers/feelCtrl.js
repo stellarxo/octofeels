@@ -2,12 +2,14 @@ app.controller('feelCtrl', function($scope, $http) {
 	$scope.derp = "Octofeeeeeeeels";
 
 	// attachs the webcam to the camera
-	Webcam.attach('#my_camera');
+	Webcam.attach('#camera');
 
-    $scope.take_snapshot = function() {
+    $scope.takeSnapshot = function() {    	
         Webcam.snap( function(data_uri) {
         	// TODO send to API
-            document.getElementById('my_result').innerHTML = '<img src="'+ data_uri+'"/>';
+
+        	// temporarily show it on the page
+            document.getElementById('result').innerHTML = '<img src="'+ data_uri+'"/>';
         } );
     }
 
