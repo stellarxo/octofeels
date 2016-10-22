@@ -2,10 +2,24 @@
 <html>
 
 <head>
+	<title>Octofeeeeeeeels</title>
+
+	<!-- Let's it have a pretty url -->
+    <base href="/">
 </head>
 
 <body>
-	<h1> Hello World!</h1>
+	<div ng-app="Octofeels">
+		<div ng-view></div>
+	</div>
 </body>
+
+<!-- external resources -->
+<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js'></script>
+<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-route.min.js'></script>
+
+<!-- our Angular resources -->
+<script src='app.js'></script>
+<script src='controllers/feelCtrl.js'></script>
 
 </html>
