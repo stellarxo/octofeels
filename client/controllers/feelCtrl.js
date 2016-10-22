@@ -8,21 +8,21 @@ app.controller('feelCtrl', function($scope, $http) {
     // emtions dictionary
 
     $scope.subreddits = {
-        "anger": "aww+cute",
-        "contempt": "aww+cute",
-        "disgust": "aww+cute",
-        "fear": "aww+cute",
+        "anger": "angry",
+        "contempt": "ugh",
+        "disgust": "gross",
+        "fear": "scary",
         "happiness": "aww+cute",
-        "neutral": "aww+cute",
-        "sadness": "aww+cute",
-        "surprise": "aww+cute"
+        "neutral": "meh",
+        "sadness": "sad+tears",
+        "surprise": "surprise"
     }
 
     $scope.phrase = "Welcome!";
     $scope.currentImage = "img/hi.png";
     $scope.feels = ['Happiness', 'Surprise', 'Sadness', 'Neutral', 'Anger', 'Contempt', 'Disgust', 'Fear'];
     $scope.selectedFeel;
-
+    $scope.makeFeelImage;
 
     // attaches the webcam to the camera
     Webcam.attach('#camera');
@@ -55,7 +55,7 @@ app.controller('feelCtrl', function($scope, $http) {
         
         // console.log(rObject.data.url);
         // console.log(rObject.data.score);
-        $scope.currentImage = imageUrl;
+        $scope.makeFeelImage = imageUrl;
         return imageUrl;
     }
 
