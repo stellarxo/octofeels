@@ -8,13 +8,18 @@
 }
 
 .emotion-img {
-	width: 300px;
+	height: 350px;
 	padding-top: 20px;
 }
 
 .dropdown-item {
-	padding: 3px;
-	padding-left: 10px;
+	margin: 3px;
+}
+
+.dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus {
+	margin: 3px;
+	color: gray;
+	background-color: white;
 }
 
 html, body {
@@ -32,13 +37,12 @@ h1 {
 }
 
 .ion-icon {
-	font-size: 22px;
+	font-size: 24px;
 }
 
 .footer {
   position: absolute;
   bottom: 0;
   width: 100%;
-  /* Set the fixed height of the footer here */
   height: 40px;
 }
