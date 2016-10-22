@@ -8,8 +8,18 @@ app.controller('feelCtrl', function($scope, $http) {
     {
         console.log(response);
         var data = response.data;
+        if(data > 0){
+
+        }
         console.log(data.length);
         $scope.result = getMax(data);
+    }
+
+    function getMax(arr) {
+        var max;
+        for (var key in arr) {
+            if (!max || parseFloat(arr[key]) > parseFloat(arr[max])) max = key;
+        return max;
     }
 
     function dataURItoBlob(dataURI) {
