@@ -7,7 +7,7 @@ app.controller('feelCtrl', function($scope, $http) {
 
     // emtions dictionary
 
-    subreddits = {
+    $scope.subreddits = {
         "anger": "aww+cute",
         "contempt": "aww+cute",
         "disgust": "aww+cute",
@@ -45,7 +45,7 @@ app.controller('feelCtrl', function($scope, $http) {
         console.log(rObject);
         console.log(rObject.data.url);
         console.log(rObject.data.score);
-        return data.url;
+        return rObject.data.url;
     }
 
     function processResult(response)
