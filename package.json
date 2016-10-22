@@ -1,0 +1,24 @@
+{
+  "name": "octofeels",
+  "version": "1.0.0",
+  "description": "So many Octofeeeeeeeels!!!",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stellarxo/octofeels.git"
+  },
+  "author": "Octfeels team ;)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/stellarxo/octofeels/issues"
+  },
+  "homepage": "https://github.com/stellarxo/octofeels#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "http": "0.0.0"
+  }
+}
