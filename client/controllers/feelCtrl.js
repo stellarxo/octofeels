@@ -8,17 +8,20 @@ app.controller('feelCtrl', function($scope, $http) {
     {
         console.log(response);
         var data = response.data;
-        if(data > 0){
-
+        if(data.length > 0){
+            $scope.emotion = getMax(data[0].scores)
+            console.log($scope.emotion);
         }
-        console.log(data.length);
-        $scope.result = getMax(data);
+        else{
+            console.log("Didn't find faces");
+        }
     }
 
     function getMax(arr) {
         var max;
         for (var key in arr) {
             if (!max || parseFloat(arr[key]) > parseFloat(arr[max])) max = key;
+        }
         return max;
     }
 
