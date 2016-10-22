@@ -23,6 +23,7 @@ app.controller('feelCtrl', function($scope, $http) {
     $scope.feels = ['Happiness', 'Surprise', 'Sadness', 'Neutral', 'Anger', 'Contempt', 'Disgust', 'Fear'];
     $scope.selectedFeel;
     $scope.makeFeelImage;
+    $scope.showSplitScreen;
 
     // attaches the webcam to the camera
     Webcam.attach('#camera');
@@ -56,6 +57,7 @@ app.controller('feelCtrl', function($scope, $http) {
         // console.log(rObject.data.url);
         // console.log(rObject.data.score);
         $scope.makeFeelImage = imageUrl;
+        $scope.showSplitScreen = true;
         return imageUrl;
     }
 
@@ -131,6 +133,7 @@ app.controller('feelCtrl', function($scope, $http) {
             }
 
             $http(req).then(function successCallback(result){
+                $scope.showSplitScreen = false;
                 processResult(result);
 
             }, function errorCallback(result){
