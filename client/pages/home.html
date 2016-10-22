@@ -2,9 +2,26 @@
 
 	<h1> Feel all the {{derp}}!</h1>
 
-		<button ng-click="takeSnapshot()" class="btn">Take Snapshot</button>
+		<button type="button" class="btn btn-primary" ng-click="takeSnapshot()">How do I octofeel?</button>
+
+		<div class="btn-group text-left" uib-dropdown is-open="status.isopen">
+            <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
+                Make me octofeel... <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                <li class="dropdown-item" role="menuitem" ng-repeat="feel in feels" ng-click="changeFeel(feel)">{{feel}}</li>
+                <li class="divider"></li>
+                <li class="dropdown-item" role="menuitem" ng-click="changeFeel('surprise_me')">Surprise me!</li>
+        </ul>
+    </div>
 
 	<div id="camera" ng-show='false'></div>
-	<div id="result"></div>
+
+	<!-- shows a gif of the resulting emotion if there is one -->
+	<div>
+		<h3>{{phrase}}</h3>
+		<img class="emotion-img" ng-src="img/{{currentImage}}">
+	</div>
 
 </div>
+
