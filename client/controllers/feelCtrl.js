@@ -6,16 +6,30 @@ app.controller('feelCtrl', function($scope, $http) {
     Webcam.attach('#camera');
 
     // emtions dictionary
+     
+    $scope.angerImageList = [
+        "anger1.jpg",
+        "anger2.jpg",
+        "anger3.gif",
+        "anger4.jpg",
+        "anger5.jpg",
+        "anger6.jpg",
+        "anger7.jpg",
+        "anger8.jpg",
+        "anger9.jpeg",
+        "anger10.jpeg",
+        "anger11.jpg"
+    ];
 
     $scope.subreddits = {
-        "anger": "aww+cute",
-        "contempt": "aww+cute",
-        "disgust": "aww+cute",
-        "fear": "aww+cute",
-        "happiness": "aww+cute",
-        "neutral": "aww+cute",
-        "sadness": "aww+cute",
-        "surprise": "aww+cute"
+        "anger": "",
+        "contempt": "cringepics+cringe",
+        "disgust": "WTF+popping+vomit+puke+poop",
+        "fear": "creepy+FearMe",
+        "happiness": "aww+cute+cats+eyebleach+puppies+dogs+kittens",
+        "neutral": "",
+        "sadness": "MorbidReality+baww+HorriblyDepressing",
+        "surprise": "WTF+Unexpected"
     }
 
     $scope.phrase = "Welcome!";
@@ -30,7 +44,7 @@ app.controller('feelCtrl', function($scope, $http) {
     function setRedditPhoto(e){
         var req = {
             method: 'GET',
-            url: redditUrl + $scope.subreddits[e] + '/top/.json?sort=top&t=all'
+            url: redditUrl + $scope.subreddits[e] + '/top/.json?limit=100&sort=top&t=all'
         }
         $http(req).then(function successCallback(result){
             var photoList = result.data.data.children;
@@ -41,6 +55,7 @@ app.controller('feelCtrl', function($scope, $http) {
     }
 
     function setRandomPhoto(photoList){
+        console.log("length: " + photoList.length);
         var imageUrl;
         while(true){
             var rObject = photoList[Math.round(Math.random()*photoList.length)];
@@ -153,7 +168,15 @@ app.controller('feelCtrl', function($scope, $http) {
         else {
             $scope.selectedFeel = item.toLowerCase();
         }
-        setRedditPhoto($scope.selectedFeel);
+        if($scope.selectedFeel == 'neutral'){
+            $scope.currentImage = '//:0';
+        }
+        else if($scope.selectedFeel == 'anger'){
+            $scope.currentImage = 'img/anger/' + $scope.angerImageList[Math.floor(Math.random() * $scope.angerImageList.length)];
+        }
+        else{
+            setRedditPhoto($scope.selectedFeel);
+        }
         // console.log("Selected " + $scope.selectedFeel);
         // var random = Math.floor(Math.random() * 1) + 1;
         // $scope.currentImage = "makeFeels/" + $scope.selectedFeel + random + ".gif";
