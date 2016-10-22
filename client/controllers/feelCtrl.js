@@ -25,6 +25,7 @@ app.controller('feelCtrl', function($scope, $http) {
     $scope.makeFeelImage;
     $scope.showSplitScreen;
     $scope.refreshIntervalID;
+    $scope.loading;
 
     // attaches the webcam to the camera
     Webcam.attach('#camera');
@@ -120,7 +121,10 @@ app.controller('feelCtrl', function($scope, $http) {
     }
 
     // takes a screenshot of the image currently being viewed from the webcam and gets the emotion
-    $scope.takeSnapshot = function(fromButton) {      
+    $scope.takeSnapshot = function(fromButton) {   
+        if (fromButton) {
+            $scope.loading = true;   
+        }
         Webcam.snap( function(data_uri) {
             var file = new File([dataURItoBlob(data_uri)], 'fileName.jpeg', {type: "'image/jpeg"});
             var req = {
@@ -139,6 +143,7 @@ app.controller('feelCtrl', function($scope, $http) {
                     clearInterval($scope.refreshIntervalID);
                 }
                 processResult(result);
+                $scope.loading = false;
 
             }, function errorCallback(result){
                 console.log("you fucked up");
