@@ -20,7 +20,7 @@ app.controller('feelCtrl', function($scope, $http) {
         }
         else{
             console.log("Didn't find faces");
-            $scope.emotion = "something weird";
+            $scope.phrase = "I don't know what you're feeling, weirdo";
             $scope.currentImage = "404.gif";
         }
     }
