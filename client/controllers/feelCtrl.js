@@ -5,23 +5,23 @@ app.controller('feelCtrl', function($scope, $http) {
     $scope.feels = ['Happiness', 'Surprise', 'Sadness', 'Neutral', 'Anger', 'Contempt', 'Disgust', 'Fear'];
     $scope.selectedFeel;
 
-	// attachs the webcam to the camera
+	// attaches the webcam to the camera
 	Webcam.attach('#camera');
 
     // takes the JSON Response from the Emotion API and sets the scope variables for emotion
     //    and the current images
     function processResult(response)
     {
-        console.log(response);
+        // console.log(response);
         var data = response.data;
         if(data.length > 0){
             $scope.emotion = getMax(data[0].scores);
             $scope.phrase = "You are feeling " + $scope.emotion;
             $scope.currentImage = $scope.emotion + ".png";
-            console.log($scope.emotion);
+            // console.log($scope.emotion);
         }
         else{
-            console.log("Didn't find faces");
+            // console.log("Didn't find faces");
             $scope.phrase = "I don't know what you're feeling, weirdo";
             $scope.currentImage = "404.gif";
         }
@@ -74,7 +74,7 @@ app.controller('feelCtrl', function($scope, $http) {
 
             $http(req).then(function successCallback(result){
                 processResult(result);
-                console.log(result);
+                // console.log(result);
             }, function errorCallback(result){
                 console.log("you fucked up");
             });
@@ -88,11 +88,17 @@ app.controller('feelCtrl', function($scope, $http) {
     
 
     $scope.changeFeel = function(item) {
-        $scope.selectedFeel = item;
-        console.log("Selected " + $scope.selectedFeel);
+        console.log(item);
+        if (item == 'surprise_me') {
+            $scope.selectedFeel = $scope.feels[Math.floor(Math.random() * 8)];
+        }
+        else {
+            $scope.selectedFeel = item;
+        }
+        // console.log("Selected " + $scope.selectedFeel);
         var random = Math.floor(Math.random() * 1) + 1;
         $scope.currentImage = "makeFeels/" + $scope.selectedFeel + random + ".gif";
-        console.log($scope.currentImage);
+        // console.log($scope.currentImage);
         $scope.phrase = "Do you feel " + $scope.selectedFeel.toLowerCase() + " yet???"
     }
 
