@@ -11,3 +11,8 @@
 	width: 300px;
 	padding-top: 20px;
 }
+
+.dropdown-item {
+	padding: 3px;
+	padding-left: 10px;
+}

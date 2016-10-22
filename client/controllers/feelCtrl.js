@@ -2,6 +2,8 @@ app.controller('feelCtrl', function($scope, $http) {
 	$scope.derp = "Octofeeeeeeeels";
     $scope.phrase = "Welcome!";
     $scope.currentImage = "hi.png";
+    $scope.feels = ['Happiness', 'Surprise', 'Sadness', 'Neutral', 'Anger', 'Contempt', 'Disgust', 'Fear'];
+    $scope.selectedFeel;
 
 	// attachs the webcam to the camera
 	Webcam.attach('#camera');
@@ -80,6 +82,14 @@ app.controller('feelCtrl', function($scope, $http) {
         	// shows image that was taken on the page
             // document.getElementById('result').innerHTML = '<img src="'+ data_uri+'"/>';
         } );
+    }
+
+    // Change feels
+    
+
+    $scope.changeFeel = function(item) {
+        $scope.selectedFeel = item;
+        console.log("Selected " + $scope.selectedFeel);
     }
 
 });
