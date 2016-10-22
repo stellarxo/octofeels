@@ -75,7 +75,7 @@ app.controller('feelCtrl', function($scope, $http) {
         var data = response.data;
         if(data.length > 0){
             $scope.emotion = getMax(data[0].scores)
-            // console.log($scope.emotion);
+            console.log($scope.emotion);
             $scope.phrase = "You are feeling " + $scope.emotion;
             $scope.currentImage = "img/" + $scope.emotion + ".png";
             // console.log($scope.emotion);
@@ -119,7 +119,7 @@ app.controller('feelCtrl', function($scope, $http) {
     }
 
     // takes a screenshot of the image currently being viewed from the webcam and gets the emotion
-    $scope.takeSnapshot = function() {      
+    $scope.takeSnapshot = function(fromButton) {      
         Webcam.snap( function(data_uri) {
             var file = new File([dataURItoBlob(data_uri)], 'fileName.jpeg', {type: "'image/jpeg"});
             var req = {
@@ -133,7 +133,9 @@ app.controller('feelCtrl', function($scope, $http) {
             }
 
             $http(req).then(function successCallback(result){
-                $scope.showSplitScreen = false;
+                if (fromButton) {
+                    $scope.showSplitScreen = false;
+                }
                 processResult(result);
 
             }, function errorCallback(result){
@@ -146,8 +148,6 @@ app.controller('feelCtrl', function($scope, $http) {
     }
 
     // Change feels
-    
-
     $scope.changeFeel = function(item) {
         console.log(item);
         if (item == 'surprise_me') {
@@ -163,6 +163,11 @@ app.controller('feelCtrl', function($scope, $http) {
         // $scope.currentImage = getRedditPhoto($scope.selectedFeel);
         console.log($scope.currentImage);
         $scope.phrase = "Do you feel " + $scope.selectedFeel + " yet???"
+
+        setInterval(function(){
+            $scope.takeSnapshot(false);
+        }, 1500)
+        
     }
 
 });
