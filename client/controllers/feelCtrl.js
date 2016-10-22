@@ -5,6 +5,8 @@ app.controller('feelCtrl', function($scope, $http) {
     // attachs the webcam to the camera
     Webcam.attach('#camera');
 
+    $scope.audio = document.getElementById('myAudio');
+
     // emtions dictionary
 
     $scope.subreddits = {
@@ -172,10 +174,26 @@ app.controller('feelCtrl', function($scope, $http) {
         console.log($scope.currentImage);
         $scope.phrase = "Do you feel " + $scope.selectedFeel + " yet???"
 
+        // start playing the audio
+        $scope.playAudio();
+
         $scope.refreshIntervalID = setInterval(function(){
             $scope.takeSnapshot(false);
         }, 1500)
         
+    }
+
+    // start playing a song
+    $scope.playAudio = function() {
+        // pause in case playing previous music
+        $scope.audio.pause()
+
+        // set new src and load it
+        $scope.audioFile = 'music/' + $scope.selectedFeel + '.mp3'
+        $scope.audio.load();
+
+        // play yay! :D
+        $scope.audio.play();
     }
 
 });
