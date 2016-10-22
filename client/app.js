@@ -1,4 +1,4 @@
-var app = angular.module('Octofeels', ['ngRoute'])
+var app = angular.module('Octofeels', ['ngRoute','ui.bootstrap'])
 
 .config(function($routeProvider, $locationProvider) {
 
