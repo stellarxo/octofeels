@@ -4,12 +4,15 @@ app.controller('feelCtrl', function($scope, $http) {
 	// attachs the webcam to the camera
 	Webcam.attach('#camera');
 
+    // takes the JSON Response from the Emotion API and sets the scope variables for emotion
+    //    and the current images
     function processResult(response)
     {
         console.log(response);
         var data = response.data;
         if(data.length > 0){
             $scope.emotion = getMax(data[0].scores)
+            $scope.currentImage = $scope.emotion + ".png"
             console.log($scope.emotion);
         }
         else{
@@ -17,6 +20,7 @@ app.controller('feelCtrl', function($scope, $http) {
         }
     }
 
+    // returns the max element of an array
     function getMax(arr) {
         var max;
         for (var key in arr) {
@@ -25,6 +29,7 @@ app.controller('feelCtrl', function($scope, $http) {
         return max;
     }
 
+    // turns a data URI into a binary blob
     function dataURItoBlob(dataURI) {
 
         // convert base64/URLEncoded data component to raw binary data held in a string
@@ -46,9 +51,9 @@ app.controller('feelCtrl', function($scope, $http) {
         return new Blob([ia], {type:mimeString});
     }
 
+    // takes a screenshot of the image currently being viewed from the webcam and gets the emotion
     $scope.takeSnapshot = function() {    	
         Webcam.snap( function(data_uri) {
-        	// TODO send to API
             var file = new File([dataURItoBlob(data_uri)], 'fileName.jpeg', {type: "'image/jpeg"});
             var req = {
                 method: 'POST',
@@ -66,8 +71,9 @@ app.controller('feelCtrl', function($scope, $http) {
             }, function errorCallback(result){
                 console.log("you fucked up")
             });
-        	// temporarily show it on the page
-            document.getElementById('result').innerHTML = '<img src="'+ data_uri+'"/>';
+
+        	// shows image that was taken on the page
+            // document.getElementById('result').innerHTML = '<img src="'+ data_uri+'"/>';
         } );
     }
 

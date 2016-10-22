@@ -5,6 +5,11 @@
 		<button ng-click="takeSnapshot()" class="btn">Take Snapshot</button>
 
 	<div id="camera" ng-show='false'></div>
-	<div id="result"></div>
+
+	<!-- shows a gif of the resulting emotion if there is one -->
+	<div ng-show="emotion">
+		<h2> You are feeling {{emotion}}</h2>
+		<img src="img/{{currentImage}}">
+	</div>
 
 </div>
