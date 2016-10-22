@@ -30,11 +30,13 @@
 		 url: apiUrl,
 		 crossDomain: true,
 		 beforeSend: function (xhrObj) {
+		 	// xhrObj.setRequestHeader("Content-Type", "application/json");
 			 xhrObj.setRequestHeader("Content-Type", "application/octet-stream");
 			 xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key", apiKey);
 			 },
 
 		 type: "POST",
+		 // data: {"url": "https://a2ua.com/face/face-018.jpg"},
 		 data: file,
 		 processData: false
 	 })
