@@ -21,7 +21,7 @@ app.controller('feelCtrl', function($scope, $http) {
     }
 
     $scope.phrase = "Welcome!";
-    $scope.currentImage = "img/hi.png";
+    $scope.currentImage = "img/hi.gif";
     $scope.feels = ['Happiness', 'Surprise', 'Sadness', 'Neutral', 'Anger', 'Contempt', 'Disgust', 'Fear'];
     $scope.selectedFeel;
     $scope.makeFeelImage;
@@ -50,13 +50,15 @@ app.controller('feelCtrl', function($scope, $http) {
         var imageUrl;
         while(true){
             var rObject = photoList[Math.round(Math.random()*photoList.length)];
-            imageUrl = rObject.data.url
-            if(imageUrl.indexOf("i.imgur") !== -1) {
-                console.log("Before: " + imageUrl);
-                imageUrl = jpgFormat(imageUrl);
-                console.log("After: " + imageUrl);
-                break;
-            }; 
+            if (rObject != null) {
+                imageUrl = rObject.data.url
+                if (imageUrl.indexOf("i.imgur") !== -1) {
+                    // console.log("Before: " + imageUrl);
+                    imageUrl = jpgFormat(imageUrl);
+                    // console.log("After: " + imageUrl);
+                    break;
+                }; 
+            }
         }
         // console.log(rObject.data.url);
         // console.log(rObject.data.score);
@@ -82,7 +84,7 @@ app.controller('feelCtrl', function($scope, $http) {
             $scope.emotion = getMax(data[0].scores)
             console.log($scope.emotion);
             $scope.phrase = "You are feeling " + $scope.emotion;
-            $scope.currentImage = "img/" + $scope.emotion + ".png";
+            $scope.currentImage = "img/" + $scope.emotion + ".gif";
             // console.log($scope.emotion);
         }
         else{
@@ -135,7 +137,8 @@ app.controller('feelCtrl', function($scope, $http) {
                 url: 'https://api.projectoxford.ai/emotion/v1.0/recognize',
                 headers: {
                     'Content-Type' : 'application/octet-stream',
-                    'Ocp-Apim-Subscription-Key' : 'bb1c37dc206b428082c31ef6fd8bc1f3'
+                    'Ocp-Apim-Subscription-Key' : 'bb1c37dc206b428082c31ef6fd8bc1f3',
+                    'Access-Control-Allow-Origin': '*'
                 },
                 data: file,
             }
