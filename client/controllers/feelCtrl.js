@@ -90,16 +90,16 @@ app.controller('feelCtrl', function($scope, $http) {
     $scope.changeFeel = function(item) {
         console.log(item);
         if (item == 'surprise_me') {
-            $scope.selectedFeel = $scope.feels[Math.floor(Math.random() * 8)];
+            $scope.selectedFeel = $scope.feels[Math.floor(Math.random() * 8)].toLowerCase();
         }
         else {
-            $scope.selectedFeel = item;
+            $scope.selectedFeel = item.toLowerCase();
         }
         // console.log("Selected " + $scope.selectedFeel);
         var random = Math.floor(Math.random() * 1) + 1;
         $scope.currentImage = "makeFeels/" + $scope.selectedFeel + random + ".gif";
         // console.log($scope.currentImage);
-        $scope.phrase = "Do you feel " + $scope.selectedFeel.toLowerCase() + " yet???"
+        $scope.phrase = "Do you feel " + $scope.selectedFeel + " yet???"
     }
 
 });
