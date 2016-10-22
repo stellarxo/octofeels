@@ -19,7 +19,7 @@ app.controller('feelCtrl', function($scope, $http) {
     }
 
     $scope.phrase = "Welcome!";
-    $scope.currentImage = "hi.png";
+    $scope.currentImage = "img/hi.png";
     $scope.feels = ['Happiness', 'Surprise', 'Sadness', 'Neutral', 'Anger', 'Contempt', 'Disgust', 'Fear'];
     $scope.selectedFeel;
 
@@ -27,24 +27,25 @@ app.controller('feelCtrl', function($scope, $http) {
     // attaches the webcam to the camera
     Webcam.attach('#camera');
 
-    function getRedditPhoto(e){
+    function setRedditPhoto(e){
         var req = {
             method: 'GET',
             url: redditUrl + $scope.subreddits[e] + '/top/.json?sort=top&t=all'
         }
         $http(req).then(function successCallback(result){
             var photoList = result.data.data.children;
-            getRandomPhoto(photoList)
+            setRandomPhoto(photoList)
         }, function errorCallback(result){
             console.log("you fucked up");
         });
     }
 
-    function getRandomPhoto(photoList){
+    function setRandomPhoto(photoList){
         var rObject = photoList[Math.round(Math.random()*photoList.length)];
-        console.log(rObject);
-        console.log(rObject.data.url);
-        console.log(rObject.data.score);
+        // console.log(rObject);
+        // console.log(rObject.data.url);
+        // console.log(rObject.data.score);
+        $scope.currentImage =rObject.data.url;
         return rObject.data.url;
     }
 
@@ -53,18 +54,15 @@ app.controller('feelCtrl', function($scope, $http) {
         var data = response.data;
         if(data.length > 0){
             $scope.emotion = getMax(data[0].scores)
-            console.log($scope.emotion);
-
-            getRedditPhoto($scope.emotion);
-            
+            // console.log($scope.emotion);
             $scope.phrase = "You are feeling " + $scope.emotion;
-            $scope.currentImage = $scope.emotion + ".png";
+            $scope.currentImage = "img/" + $scope.emotion + ".png";
             // console.log($scope.emotion);
         }
         else{
             // console.log("Didn't find faces");
             $scope.phrase = "I don't know what you're feeling, weirdo";
-            $scope.currentImage = "404.gif";
+            $scope.currentImage = "img/404.gif";
         }
     }
 
@@ -136,9 +134,11 @@ app.controller('feelCtrl', function($scope, $http) {
         else {
             $scope.selectedFeel = item.toLowerCase();
         }
+        setRedditPhoto($scope.selectedFeel);
         // console.log("Selected " + $scope.selectedFeel);
-        var random = Math.floor(Math.random() * 1) + 1;
-        $scope.currentImage = "makeFeels/" + $scope.selectedFeel + random + ".gif";
+        // var random = Math.floor(Math.random() * 1) + 1;
+        // $scope.currentImage = "makeFeels/" + $scope.selectedFeel + random + ".gif";
+        // $scope.currentImage = getRedditPhoto($scope.selectedFeel);
         // console.log($scope.currentImage);
         $scope.phrase = "Do you feel " + $scope.selectedFeel + " yet???"
     }
