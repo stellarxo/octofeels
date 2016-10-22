@@ -1,21 +1,57 @@
 app.controller('feelCtrl', function($scope, $http) {
 	$scope.derp = "Octofeeeeeeeels";
+    redditUrl = "https://www.reddit.com/r/"
+
+    subreddits = {
+        "anger": "",
+        "contempt": "",
+        "disgust": "",
+        "fear": "",
+        "happiness": "aww+cute",
+        "neutral": "",
+        "sadness": "",
+        "surprise": ""
+    }
+
     $scope.phrase = "Welcome!";
     $scope.currentImage = "hi.png";
     $scope.feels = ['Happiness', 'Surprise', 'Sadness', 'Neutral', 'Anger', 'Contempt', 'Disgust', 'Fear'];
     $scope.selectedFeel;
 
+
 	// attaches the webcam to the camera
 	Webcam.attach('#camera');
 
-    // takes the JSON Response from the Emotion API and sets the scope variables for emotion
-    //    and the current images
+    function getRedditPhoto(e){
+        var req = {
+            method: 'GET',
+            url: redditUrl + subreddits[e] + '/top/.json?sort=top&t=all'
+        }
+        $http(req).then(function successCallback(result){
+            var photoList = result.data.data.children;
+            getRandomPhoto(photoList)
+        }, function errorCallback(result){
+            console.log("you fucked up");
+        });
+    }
+
+    function getRandomPhoto(photoList){
+        var rObject = photoList[Math.round(Math.random()*photoList.length)];
+        console.log(rObject);
+        console.log(rObject.data.url);
+        console.log(rObject.data.score);
+        return data.url;
+    }
+
     function processResult(response)
     {
-        // console.log(response);
         var data = response.data;
         if(data.length > 0){
-            $scope.emotion = getMax(data[0].scores);
+            $scope.emotion = getMax(data[0].scores)
+            console.log($scope.emotion);
+
+            getRedditPhoto($scope.emotion);
+            
             $scope.phrase = "You are feeling " + $scope.emotion;
             $scope.currentImage = $scope.emotion + ".png";
             // console.log($scope.emotion);
@@ -74,7 +110,7 @@ app.controller('feelCtrl', function($scope, $http) {
 
             $http(req).then(function successCallback(result){
                 processResult(result);
-                // console.log(result);
+
             }, function errorCallback(result){
                 console.log("you fucked up");
             });
