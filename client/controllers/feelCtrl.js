@@ -90,6 +90,9 @@ app.controller('feelCtrl', function($scope, $http) {
     $scope.changeFeel = function(item) {
         $scope.selectedFeel = item;
         console.log("Selected " + $scope.selectedFeel);
+        var random = "1";
+        $scope.currentImage = "makeFeels/" + $scope.selectedFeel + random + ".png";
+        console.log($scope.currentImage);
     }
 
 });
