@@ -1,0 +1,14 @@
+branch-defaults:
+  master:
+    environment: octofeels
+environment-defaults:
+  octofeels:
+    branch: null
+    repository: null
+global:
+  application_name: octofeels
+  default_ec2_keyname: null
+  default_platform: node.js
+  default_region: us-west-2
+  profile: eb-cli
+  sc: git
