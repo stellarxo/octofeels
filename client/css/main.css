@@ -75,3 +75,10 @@ h1 {
     opacity: 0;
   }
 }
+
+.container {
+	display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    margin: 150px;
+}

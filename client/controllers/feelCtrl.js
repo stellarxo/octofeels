@@ -31,6 +31,7 @@ app.controller('feelCtrl', function($scope, $http) {
     Webcam.attach('#camera');
 
     function setRedditPhoto(e){
+        $scope.loading = true;
         var req = {
             method: 'GET',
             url: redditUrl + $scope.subreddits[e] + '/top/.json?sort=top&t=all'
@@ -55,11 +56,11 @@ app.controller('feelCtrl', function($scope, $http) {
                 break;
             }; 
         }
-        
         // console.log(rObject.data.url);
         // console.log(rObject.data.score);
         $scope.makeFeelImage = imageUrl;
         $scope.showSplitScreen = true;
+        $scope.loading = false;
         return imageUrl;
     }
 

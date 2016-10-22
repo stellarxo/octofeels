@@ -19,13 +19,16 @@
 
 	<!-- shows a gif of the resulting emotion if there is one -->
 	<div>
-		<img class="emotion-img" ng-src="{{currentImage}}" ng-show="!loading">
-		<img class="emotion-img" ng-src="{{makeFeelImage}}" ng-show="showSplitScreen && !loading">
-		<div id="loading-animation" class="m-x-auto" ng-show="loading">
-			<div class="dot"></div>
-			<div class="dot"></div>
-			<div class="dot"></div>
+		<div>
+			<img class="emotion-img" ng-src="{{currentImage}}" ng-show="!loading">
+			<div id="loading-animation" class="container" ng-show="loading">
+				<div class="dot m-x-auto"></div>
+				<div class="dot m-x-auto"></div>
+				<div class="dot m-x-auto"></div>
+			</div>
+			<img class="emotion-img" ng-src="{{makeFeelImage}}" ng-show="showSplitScreen && !loading">
 		</div>
+		
 		<h3>{{phrase}}</h3>
 		<p>WARNING: This page may cause extreme emotional distress. Please use with caution.</p>
 	</div>
