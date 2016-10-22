@@ -24,6 +24,7 @@ app.controller('feelCtrl', function($scope, $http) {
     $scope.selectedFeel;
     $scope.makeFeelImage;
     $scope.showSplitScreen;
+    $scope.refreshIntervalID;
 
     // attaches the webcam to the camera
     Webcam.attach('#camera');
@@ -135,6 +136,7 @@ app.controller('feelCtrl', function($scope, $http) {
             $http(req).then(function successCallback(result){
                 if (fromButton) {
                     $scope.showSplitScreen = false;
+                    clearInterval($scope.refreshIntervalID);
                 }
                 processResult(result);
 
@@ -164,7 +166,7 @@ app.controller('feelCtrl', function($scope, $http) {
         console.log($scope.currentImage);
         $scope.phrase = "Do you feel " + $scope.selectedFeel + " yet???"
 
-        setInterval(function(){
+        $scope.refreshIntervalID = setInterval(function(){
             $scope.takeSnapshot(false);
         }, 1500)
         
