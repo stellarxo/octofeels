@@ -41,12 +41,31 @@ app.controller('feelCtrl', function($scope, $http) {
     }
 
     function setRandomPhoto(photoList){
-        var rObject = photoList[Math.round(Math.random()*photoList.length)];
-        // console.log(rObject);
+        var imageUrl;
+        while(true){
+            var rObject = photoList[Math.round(Math.random()*photoList.length)];
+            imageUrl = rObject.data.url
+            if(imageUrl.indexOf("i.imgur") !== -1) {
+                console.log("Before: " + imageUrl);
+                imageUrl = jpgFormat(imageUrl);
+                console.log("After: " + imageUrl);
+                break;
+            }; 
+        }
+        
         // console.log(rObject.data.url);
         // console.log(rObject.data.score);
-        $scope.currentImage =rObject.data.url;
-        return rObject.data.url;
+        $scope.currentImage = imageUrl;
+        return imageUrl;
+    }
+
+    function jpgFormat(imageUrl){
+        var chunks = imageUrl.split('.');
+        if(chunks[chunks.length-1]=='jpg') return imageUrl;
+        else {
+            chunks[chunks.length-1] = 'jpg';
+            return chunks.join('.');
+        }
     }
 
     function processResult(response)
@@ -139,7 +158,7 @@ app.controller('feelCtrl', function($scope, $http) {
         // var random = Math.floor(Math.random() * 1) + 1;
         // $scope.currentImage = "makeFeels/" + $scope.selectedFeel + random + ".gif";
         // $scope.currentImage = getRedditPhoto($scope.selectedFeel);
-        // console.log($scope.currentImage);
+        console.log($scope.currentImage);
         $scope.phrase = "Do you feel " + $scope.selectedFeel + " yet???"
     }
 
