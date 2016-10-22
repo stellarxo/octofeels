@@ -5,6 +5,8 @@ app.controller('feelCtrl', function($scope, $http) {
     // attachs the webcam to the camera
     Webcam.attach('#camera');
 
+    $scope.audio = document.getElementById('myAudio');
+
     // emtions dictionary
      
     $scope.angerImageList = [
@@ -24,24 +26,28 @@ app.controller('feelCtrl', function($scope, $http) {
     $scope.subreddits = {
         "anger": "",
         "contempt": "cringepics+cringe",
-        "disgust": "WTF+popping+vomit+puke+poop",
-        "fear": "creepy+FearMe",
+        "disgust": "WTF+popping+vomit+puke+poop+gross",
+        "fear": "creepy+FearMe+scaredshitless",
         "happiness": "aww+cute+cats+eyebleach+puppies+dogs+kittens",
         "neutral": "",
-        "sadness": "MorbidReality+baww+HorriblyDepressing",
+        "sadness": "MorbidReality+baww+HorriblyDepressing+sad",
         "surprise": "WTF+Unexpected"
     }
 
     $scope.phrase = "Welcome!";
-    $scope.currentImage = "img/hi.png";
+    $scope.currentImage = "img/hi.gif";
     $scope.feels = ['Happiness', 'Surprise', 'Sadness', 'Neutral', 'Anger', 'Contempt', 'Disgust', 'Fear'];
     $scope.selectedFeel;
-
+    $scope.makeFeelImage;
+    $scope.showSplitScreen;
+    $scope.refreshIntervalID;
+    $scope.loading;
 
     // attaches the webcam to the camera
     Webcam.attach('#camera');
 
     function setRedditPhoto(e){
+        $scope.loading = true;
         var req = {
             method: 'GET',
             url: redditUrl + $scope.subreddits[e] + '/top/.json?limit=100&sort=top&t=all'
@@ -59,18 +65,21 @@ app.controller('feelCtrl', function($scope, $http) {
         var imageUrl;
         while(true){
             var rObject = photoList[Math.round(Math.random()*photoList.length)];
-            imageUrl = rObject.data.url
-            if(imageUrl.indexOf("i.imgur") !== -1) {
-                console.log("Before: " + imageUrl);
-                imageUrl = jpgFormat(imageUrl);
-                console.log("After: " + imageUrl);
-                break;
-            }; 
+            if (rObject != null) {
+                imageUrl = rObject.data.url
+                if (imageUrl.indexOf("i.imgur") !== -1) {
+                    // console.log("Before: " + imageUrl);
+                    imageUrl = jpgFormat(imageUrl);
+                    // console.log("After: " + imageUrl);
+                    break;
+                }; 
+            }
         }
-        
         // console.log(rObject.data.url);
         // console.log(rObject.data.score);
-        $scope.currentImage = imageUrl;
+        $scope.makeFeelImage = imageUrl;
+        $scope.showSplitScreen = true;
+        $scope.loading = false;
         return imageUrl;
     }
 
@@ -88,9 +97,9 @@ app.controller('feelCtrl', function($scope, $http) {
         var data = response.data;
         if(data.length > 0){
             $scope.emotion = getMax(data[0].scores)
-            // console.log($scope.emotion);
+            console.log($scope.emotion);
             $scope.phrase = "You are feeling " + $scope.emotion;
-            $scope.currentImage = "img/" + $scope.emotion + ".png";
+            $scope.currentImage = "img/" + $scope.emotion + ".gif";
             // console.log($scope.emotion);
         }
         else{
@@ -132,7 +141,10 @@ app.controller('feelCtrl', function($scope, $http) {
     }
 
     // takes a screenshot of the image currently being viewed from the webcam and gets the emotion
-    $scope.takeSnapshot = function() {      
+    $scope.takeSnapshot = function(fromButton) {   
+        if (fromButton) {
+            $scope.loading = true;   
+        }
         Webcam.snap( function(data_uri) {
             var file = new File([dataURItoBlob(data_uri)], 'fileName.jpeg', {type: "'image/jpeg"});
             var req = {
@@ -140,13 +152,19 @@ app.controller('feelCtrl', function($scope, $http) {
                 url: 'https://api.projectoxford.ai/emotion/v1.0/recognize',
                 headers: {
                     'Content-Type' : 'application/octet-stream',
-                    'Ocp-Apim-Subscription-Key' : 'bb1c37dc206b428082c31ef6fd8bc1f3'
+                    'Ocp-Apim-Subscription-Key' : 'bb1c37dc206b428082c31ef6fd8bc1f3',
+                    'Access-Control-Allow-Origin': '*'
                 },
                 data: file,
             }
 
             $http(req).then(function successCallback(result){
+                if (fromButton) {
+                    $scope.showSplitScreen = false;
+                    clearInterval($scope.refreshIntervalID);
+                }
                 processResult(result);
+                $scope.loading = false;
 
             }, function errorCallback(result){
                 console.log("you fucked up");
@@ -158,8 +176,6 @@ app.controller('feelCtrl', function($scope, $http) {
     }
 
     // Change feels
-    
-
     $scope.changeFeel = function(item) {
         console.log(item);
         if (item == 'surprise_me') {
@@ -183,6 +199,27 @@ app.controller('feelCtrl', function($scope, $http) {
         // $scope.currentImage = getRedditPhoto($scope.selectedFeel);
         console.log($scope.currentImage);
         $scope.phrase = "Do you feel " + $scope.selectedFeel + " yet???"
+
+        // start playing the audio
+        $scope.playAudio();
+
+        $scope.refreshIntervalID = setInterval(function(){
+            $scope.takeSnapshot(false);
+        }, 1500)
+        
+    }
+
+    // start playing a song
+    $scope.playAudio = function() {
+        // pause in case playing previous music
+        $scope.audio.pause()
+
+        // set new src and load it
+        $scope.audioFile = 'music/' + $scope.selectedFeel + '.mp3'
+        $scope.audio.load();
+
+        // play yay! :D
+        $scope.audio.play();
     }
 
 });

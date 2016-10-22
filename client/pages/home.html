@@ -1,8 +1,11 @@
 <div class="text-center">
 
 	<h1> Feel all the {{derp}}!</h1>
+    <audio id="myAudio">
+        <source src="{{audioFile}}" type="audio/mpeg">
+    </audio>
 
-		<button type="button" class="btn btn-primary" ng-click="takeSnapshot()">How do I octofeel?</button>
+		<button type="button" class="btn btn-primary" ng-click="takeSnapshot(true)">How do I octofeel?</button>
 
 		<div class="btn-group text-left" uib-dropdown is-open="status.isopen">
             <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
@@ -19,8 +22,18 @@
 
 	<!-- shows a gif of the resulting emotion if there is one -->
 	<div>
-		<img class="emotion-img" ng-src="{{currentImage}}">
+		<div>
+			<img class="emotion-img" ng-src="{{currentImage}}" ng-show="!loading">
+			<div id="loading-animation" class="container" ng-show="loading">
+				<div class="dot m-x-auto"></div>
+				<div class="dot m-x-auto"></div>
+				<div class="dot m-x-auto"></div>
+			</div>
+			<img class="emotion-img" ng-src="{{makeFeelImage}}" ng-show="showSplitScreen && !loading">
+		</div>
+		
 		<h3>{{phrase}}</h3>
+		<p>WARNING: This page may cause extreme emotional distress. Please use with caution.</p>
 	</div>
 
 	<footer class="footer">
