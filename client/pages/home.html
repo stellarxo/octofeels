@@ -12,7 +12,7 @@
                 {{buttonText}}<span class="caret"></span>
             </button>
             <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
-                <li class="dropdown-item" role="menuitem" ng-repeat="feel in feels" ng-click="changeFeel(feel)"><a href="#">{{feel}}</a></li>
+                <li class="dropdown-item" role="menuitem" ng-repeat="feel in feels" ng-click="changeFeel(feel, true)"><a href="#">{{feel}}</a></li>
                 <li class="divider"></li>
                 <li class="dropdown-item" role="menuitem" ng-click="changeFeel('surprise_me')"><a href="#">Surprise me!</a></li>
         	</ul>
@@ -31,7 +31,7 @@
 				<div class="dot m-x-auto"></div>
 				<div class="dot m-x-auto"></div>
 			</div>
-			<img class="emotion-img" ng-src="{{makeFeelImage}}" ng-show="showSplitScreen && !loading">
+			<img class="emotion-img" ng-src="{{makeFeelImage}}" ng-show="showSplitScreen && !loading && makeFeelImage">
 		</div>
 		
 		<h3>{{phrase}}</h3>
@@ -39,7 +39,7 @@
 	</div>
 	<div id="chart"></div>
 	<footer class="footer">
-      <div class="container">
+		<div>
         <a class="social-media-icons" href="https://github.com/stellarxo/octofeels">
             <i class="ion-icon ion-social-github"></i>
         </a>

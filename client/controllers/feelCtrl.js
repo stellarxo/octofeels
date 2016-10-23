@@ -163,9 +163,15 @@ app.controller('feelCtrl', function($scope, $http) {
     // takes a screenshot of the image currently being viewed from the webcam and gets the emotion
     $scope.takeSnapshot = function(fromButton) {   
         if (fromButton) {
-            $scope.loading = true;
+            // $scope.loading = true;
             // pause in case playing previous music
             $scope.audio.pause()
+            $scope.makeFeelImage = null;
+
+            // if there is not a current feeling found for the user
+            if(!$scope.phrase.includes('feeling')){
+                $scope.phrase = "";
+            }
         }
         Webcam.snap( function(data_uri) {
             var file = new File([dataURItoBlob(data_uri)], 'fileName.jpeg', {type: "'image/jpeg"});
@@ -199,7 +205,7 @@ app.controller('feelCtrl', function($scope, $http) {
     }
 
     // Change feels
-    $scope.changeFeel = function(item) {
+    $scope.changeFeel = function(item, playNew) {
         console.log(item);
         if (item == 'surprise_me') {
             $scope.selectedFeel = $scope.feels[Math.floor(Math.random() * 8)].toLowerCase();
@@ -222,8 +228,11 @@ app.controller('feelCtrl', function($scope, $http) {
 
         $scope.showNextButton = true;
 
-        // start playing the audio
-        $scope.playAudio();
+        if(playNew) {
+            // start playing the audio from beginning
+            $scope.playAudio();
+        }
+        
 
         $scope.refreshIntervalID = setInterval(function(){
             $scope.takeSnapshot(false);
@@ -231,7 +240,7 @@ app.controller('feelCtrl', function($scope, $http) {
         
     }
 
-    // start playing a song
+    // start playing a song from the beginning
     $scope.playAudio = function() {
         // pause in case playing previous music
         $scope.audio.pause()
@@ -246,7 +255,8 @@ app.controller('feelCtrl', function($scope, $http) {
 
     // Show next picture of same feels
     $scope.showNext = function() {
-        $scope.changeFeel($scope.selectedFeel.toProperCase());
+        $scope.makeFeelImage = null;
+        $scope.changeFeel($scope.selectedFeel.toProperCase(), false);
     }
 
     function initGraph(){
