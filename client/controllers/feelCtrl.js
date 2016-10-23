@@ -29,7 +29,7 @@ app.controller('feelCtrl', function($scope, $http) {
         "disgust": "WTF+popping+vomit+puke+poop+gross",
         "fear": "creepy+FearMe+scaredshitless",
         "happiness": "aww+cute+cats+eyebleach+puppies+dogs+kittens",
-        "neutral": "",
+        "neutral": "boring",
         "sadness": "MorbidReality+baww+HorriblyDepressing+sad",
         "surprise": "WTF+Unexpected"
     }
@@ -56,7 +56,7 @@ app.controller('feelCtrl', function($scope, $http) {
             var photoList = result.data.data.children;
             setRandomPhoto(photoList)
         }, function errorCallback(result){
-            console.log("you fucked up");
+            console.log("Failed while retrieving reddit data from " + subreddits[e]);
         });
     }
 
@@ -167,7 +167,7 @@ app.controller('feelCtrl', function($scope, $http) {
                 $scope.loading = false;
 
             }, function errorCallback(result){
-                console.log("you fucked up");
+                console.log("Failed to access microsoft's emotion api");
             });
 
             // shows image that was taken on the page
@@ -184,11 +184,8 @@ app.controller('feelCtrl', function($scope, $http) {
         else {
             $scope.selectedFeel = item.toLowerCase();
         }
-        if($scope.selectedFeel == 'neutral'){
-            $scope.currentImage = '//:0';
-        }
-        else if($scope.selectedFeel == 'anger'){
-            $scope.currentImage = 'img/anger/' + $scope.angerImageList[Math.floor(Math.random() * $scope.angerImageList.length)];
+        if($scope.selectedFeel == 'anger'){
+            $scope.makeFeelImage = 'img/anger/' + $scope.angerImageList[Math.floor(Math.random() * $scope.angerImageList.length)];
         }
         else{
             setRedditPhoto($scope.selectedFeel);
@@ -197,7 +194,6 @@ app.controller('feelCtrl', function($scope, $http) {
         // var random = Math.floor(Math.random() * 1) + 1;
         // $scope.currentImage = "makeFeels/" + $scope.selectedFeel + random + ".gif";
         // $scope.currentImage = getRedditPhoto($scope.selectedFeel);
-        console.log($scope.currentImage);
         $scope.phrase = "Do you feel " + $scope.selectedFeel + " yet???"
 
         // start playing the audio
