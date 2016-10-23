@@ -19,6 +19,7 @@ app.controller('feelCtrl', function($scope, $http) {
         "surprise": [0,0,0,0,0,0,0,0,0,0]
     };
     var chart = null;
+    var firstEmotionPick = true;
     initGraph();
 
     // emtions dictionary 
@@ -76,7 +77,6 @@ app.controller('feelCtrl', function($scope, $http) {
     }
 
     function setRandomPhoto(photoList){
-        console.log("length: " + photoList.length);
         var imageUrl;
         while(true){
             var rObject = photoList[Math.round(Math.random()*photoList.length)];
@@ -112,7 +112,6 @@ app.controller('feelCtrl', function($scope, $http) {
         var data = response.data;
         if(data.length > 0){
             $scope.emotion = getMax(data[0].scores)
-            console.log($scope.emotion);
             $scope.phrase = "You are feeling " + $scope.emotion;
             $scope.currentImage = "img/" + $scope.emotion + ".gif";
             // console.log($scope.emotion);
@@ -129,9 +128,7 @@ app.controller('feelCtrl', function($scope, $http) {
         var max;
         for (var key in arr) {
             if (!max || parseFloat(arr[key]) > parseFloat(arr[max])) max = key;
-            console.log("Before : " + $scope.feelingNumbers[key]);
             $scope.feelingNumbers[key].shift();
-            console.log("After : " + $scope.feelingNumbers[key]);
             $scope.feelingNumbers[key].push(parseFloat(arr[key]));
         }
         updateGraph();
@@ -206,13 +203,19 @@ app.controller('feelCtrl', function($scope, $http) {
 
     // Change feels
     $scope.changeFeel = function(item, playNew) {
-        console.log(item);
+        
         if (item == 'surprise_me') {
             $scope.selectedFeel = $scope.feels[Math.floor(Math.random() * 8)].toLowerCase();
         }
         else {
             $scope.selectedFeel = item.toLowerCase();
         }
+        
+        if($scope.selectedFeel != "happiness" && $scope.selectedFeel != "neutral" && firstEmotionPick){
+            alert("WARNING: This page may cause extreme emotional distress. Please use with caution.");
+            firstEmotionPick = false;
+        }
+
         if($scope.selectedFeel == 'anger'){
             $scope.makeFeelImage = 'img/anger/' + $scope.angerImageList[Math.floor(Math.random() * $scope.angerImageList.length)];
         }
