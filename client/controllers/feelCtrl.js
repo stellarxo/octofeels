@@ -151,7 +151,7 @@ app.controller('feelCtrl', function($scope, $http) {
             $scope.makeFeelImage = null;
 
             // if there is not a current feeling found for the user
-            if(!$scope.phrase.contains('feeling')){
+            if(!$scope.phrase.includes('feeling')){
                 $scope.phrase = "";
             }
         }
