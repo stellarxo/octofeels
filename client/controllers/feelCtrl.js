@@ -98,6 +98,19 @@ app.controller('feelCtrl', function($scope, $http) {
         return imageUrl;
     }
 
+    // uses our API to get a random photo in the folder of the emotion
+    function getRandomPhoto(emotion) {
+        $scope.loading = true;
+        // TODO check if works maybe... too lazy
+        $http.get("api/images/" + emotion).then(function successCallback(result){
+            $scope.imageUrl = result[Math.floor(Math.random() * result.length)].toLowerCase()
+
+            $scope.showSplitScreen = true;
+            $scope.loading = false;
+            $scope.$apply();
+        })
+    }
+
     function jpgFormat(imageUrl){
         var chunks = imageUrl.split('.');
         if(chunks[chunks.length-1]=='jpg') return imageUrl;
