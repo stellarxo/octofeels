@@ -7,8 +7,21 @@ app.controller('feelCtrl', function($scope, $http) {
 
     $scope.audio = document.getElementById('myAudio');
 
-    // emtions dictionary
-     
+    //graph log
+    $scope.feelingNumbers = {
+        "anger": [0,0,0,0,0,0,0,0,0,0],
+        "contempt": [0,0,0,0,0,0,0,0,0,0],
+        "disgust": [0,0,0,0,0,0,0,0,0,0],
+        "fear": [0,0,0,0,0,0,0,0,0,0],
+        "happiness": [0,0,0,0,0,0,0,0,0,0],
+        "neutral": [0,0,0,0,0,0,0,0,0,0],
+        "sadness": [0,0,0,0,0,0,0,0,0,0],
+        "surprise": [0,0,0,0,0,0,0,0,0,0]
+    };
+    var chart = null;
+    initGraph();
+
+    // emtions dictionary 
     $scope.angerImageList = [
         "anger1.jpg",
         "anger2.jpg",
@@ -116,7 +129,12 @@ app.controller('feelCtrl', function($scope, $http) {
         var max;
         for (var key in arr) {
             if (!max || parseFloat(arr[key]) > parseFloat(arr[max])) max = key;
+            console.log("Before : " + $scope.feelingNumbers[key]);
+            $scope.feelingNumbers[key].shift();
+            console.log("After : " + $scope.feelingNumbers[key]);
+            $scope.feelingNumbers[key].push(parseFloat(arr[key]));
         }
+        updateGraph();
         return max;
     }
 
@@ -229,6 +247,43 @@ app.controller('feelCtrl', function($scope, $http) {
     // Show next picture of same feels
     $scope.showNext = function() {
         $scope.changeFeel($scope.selectedFeel.toProperCase());
+    }
+
+    function initGraph(){
+        var myColumns = generateColumns();
+        chart = c3.generate({
+            size: {
+                height: 150,
+                width: 400
+            },
+            data: {
+                columns: myColumns
+            }
+        });
+    }
+
+    function generateColumns(){
+        var myColumns = [];
+        for(c in $scope.feelingNumbers){
+            myColumns.push(generateColumn(c, $scope.feelingNumbers[c]));
+        }
+        return myColumns;
+    }
+
+    function generateColumn(label, values){
+        var myColumn = [label];
+        for(v in values){
+            myColumn.push(values[v]);
+        } 
+        return myColumn;
+    }
+
+    function updateGraph(){
+        for(feel in $scope.feelingNumbers){
+            chart.load({
+                columns: [generateColumn(feel, $scope.feelingNumbers[feel])]
+            });
+        }
     }
 
     String.prototype.toProperCase = function () {
