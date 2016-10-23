@@ -42,6 +42,8 @@ app.controller('feelCtrl', function($scope, $http) {
     $scope.showSplitScreen;
     $scope.refreshIntervalID;
     $scope.loading;
+    $scope.buttonText = "Make me octofeel  ";
+    $scope.showNextButton = false;
 
     // attaches the webcam to the camera
     Webcam.attach('#camera');
@@ -163,6 +165,7 @@ app.controller('feelCtrl', function($scope, $http) {
             $http(req).then(function successCallback(result){
                 if (fromButton) {
                     $scope.showSplitScreen = false;
+                    $scope.showNextButton = false;
                     clearInterval($scope.refreshIntervalID);
                 }
                 processResult(result);
@@ -192,11 +195,14 @@ app.controller('feelCtrl', function($scope, $http) {
         else{
             setRedditPhoto($scope.selectedFeel);
         }
+        $scope.buttonText = item + " ";
         // console.log("Selected " + $scope.selectedFeel);
         // var random = Math.floor(Math.random() * 1) + 1;
         // $scope.currentImage = "makeFeels/" + $scope.selectedFeel + random + ".gif";
         // $scope.currentImage = getRedditPhoto($scope.selectedFeel);
         $scope.phrase = "Do you feel " + $scope.selectedFeel + " yet???"
+
+        $scope.showNextButton = true;
 
         // start playing the audio
         $scope.playAudio();
@@ -219,5 +225,14 @@ app.controller('feelCtrl', function($scope, $http) {
         // play yay! :D
         $scope.audio.play();
     }
+
+    // Show next picture of same feels
+    $scope.showNext = function() {
+        $scope.changeFeel($scope.selectedFeel.toProperCase());
+    }
+
+    String.prototype.toProperCase = function () {
+    return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+};
 
 });

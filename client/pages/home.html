@@ -15,8 +15,10 @@
                 <li class="dropdown-item" role="menuitem" ng-repeat="feel in feels" ng-click="changeFeel(feel)"><a href="#">{{feel}}</a></li>
                 <li class="divider"></li>
                 <li class="dropdown-item" role="menuitem" ng-click="changeFeel('surprise_me')"><a href="#">Surprise me!</a></li>
-        </ul>
-    </div>
+        	</ul>
+    	</div>
+
+    	<button type="button" class="btn btn-secondary" ng-click="showNext()" ng-show="showNextButton">Next</button>
 
 	<div id="camera" ng-show='false'></div>
 
