@@ -33,6 +33,7 @@ app.get('/api/images/:emotion', function(req, res) {
 	var path = 'client/img/' + req.params.emotion
 
 	fs.readdir(path, function(err, items) {
+		items = items.filter(function(val) { return val !== '.DS_Store';})
 	    res.send(items)
 	});
 })
